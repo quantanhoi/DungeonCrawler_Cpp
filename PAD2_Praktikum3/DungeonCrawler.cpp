@@ -235,6 +235,9 @@ bool DungeonCrawler::checkEndGame() {
                 return false;
             }
             else {
+                QMessageBox msg;
+                msg.setText(QString("All character is dead"));
+                msg.exec();
                 this->gameEnd = true;
                 return true;
             }

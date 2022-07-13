@@ -26,6 +26,7 @@ SOURCES += \
     lootChest.cpp \
     main.cpp \
     mainwindow.cpp \
+    node.cpp \
     passive.cpp \
     startscreen.cpp
 
@@ -45,6 +46,7 @@ HEADERS += \
     list.h \
     lootChest.h \
     mainwindow.h \
+    node.h \
     passive.h \
     startscreen.h
 

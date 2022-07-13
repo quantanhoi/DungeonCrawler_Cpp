@@ -162,7 +162,8 @@ int Character::move(Input input) {
         //msgBox.exec();
         break;
     case skip:
-        this->level->distanceViaPortal(this->currentTile, this->getLevel()->getTile(4, 5));  //lootchest
+        //this->level->distanceViaPortal(this->currentTile, this->getLevel()->getTile(4, 5));  //lootchest
+        this->getLevel()->aStar(this->currentTile, this->getLevel()->getTile(4, 5));
         //hasEnemyAround();
         //QApplication::quit();
         //msgBox.setText(QString("skip"));

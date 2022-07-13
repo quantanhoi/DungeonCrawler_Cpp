@@ -6,6 +6,7 @@
 #include<string>
 #include"Tile.h"
 #include"Character.h"
+#include"node.h"
 
 const int numRows = 10;
 const int numColumns = 10;
@@ -38,8 +39,16 @@ public:
     }
     //prak5
     std::vector<std::tuple<int, int, int >> getPath(Tile* from, Tile* to);    //distance, row, col
-    int distanceViaPortal(Tile* from, Tile* to);
-    int distanceOnFoot(Tile* from, Tile* to);
+    float distanceViaPortal(Tile* from, Tile* to);
+    float distanceOnFoot(Tile* from, Tile* to);
+    void pathFlooding(std::vector<std::vector<std::tuple<int, int, int>>>& allPath ,Tile* from, Tile* to);
+    bool isValidNode(int x, int y);
+    bool isDestination(int x, int y, Tile* to);
+    std::vector<Node> aStar(Tile* from, Tile* to);
+    float calculateH(int x, int y, Tile* dest);
+    std::vector<Node> makePath(std::array<std::array<Node, numRows>, numColumns> allMap, Node dest);
+
+
 
 };
 

@@ -13,6 +13,7 @@ public:
     Tile* onLeave(Tile* destTile, Character* who) override;
     lootChest(Level* stage, int r, int c, DungeonCrawler* gamePlay);
     ~lootChest() {};
+    void endgame();
 };
 
 #endif // LOOTCHEST_H

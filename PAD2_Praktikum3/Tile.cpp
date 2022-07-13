@@ -4,6 +4,7 @@
 #include<Character.h>
 #include<QMessageBox>
 #include "levelChanger.h"
+#include"lootChest.h"
 Tile::Tile(Level* stage, int r, int c){
     pCharacter = nullptr;
     pLevel = stage;
@@ -76,6 +77,9 @@ bool Tile::moveTo(Tile* destTile, Character* who) {
                 destTile->pCharacter = nullptr;
                 destTile->pCharacter = who;
             }
+            if(typeid (*destTile).name() == typeid (lootChest).name()) {
+                dynamic_cast<lootChest*>(destTile)->endgame();
+        }
             return true;
         }
         else {

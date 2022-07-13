@@ -1,5 +1,6 @@
 #include "lootChest.h"
 #include"DungeonCrawler.h"
+#include<QMessageBox>
 lootChest::lootChest(Level* stage, int r, int c, DungeonCrawler* gamePlay) : Tile(stage, row , col)
 {
     pCharacter = nullptr;
@@ -12,9 +13,16 @@ lootChest::lootChest(Level* stage, int r, int c, DungeonCrawler* gamePlay) : Til
     game = gamePlay;
 
 }
-Tile* lootChest::onEnter(Tile *fromTile, Character *who) {
-    found = true;
+void lootChest::endgame() {
+    if(this->hasCharacter()) {
+        found = true;
+    }
     game->setGameEnd(found);
+}
+Tile* lootChest::onEnter(Tile *fromTile, Character *who) {
+    QMessageBox msg;
+    msg.setText(QString("Found the chest"));
+    msg.exec();
     return this;
 
 }
