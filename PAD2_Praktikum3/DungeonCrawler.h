@@ -46,6 +46,7 @@ public:
     void setPGraphicalUI(GraphicalUI *newPGraphicalUI);
     void setCurrentLevel(Level *newCurrentLevel);
     void setGameEnd(bool newGameEnd);
+    void writeLevel();
 };
 
 #endif // DUNGEONCRAWLER_H

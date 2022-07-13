@@ -13,7 +13,7 @@ void attackController::chooseCharacter(Level *level) {
     }
 }
 int attackController::move(Input in) {    //find and attack closest character
-
+    //now somehow we could choose an input to move
     return 1;
 
 }

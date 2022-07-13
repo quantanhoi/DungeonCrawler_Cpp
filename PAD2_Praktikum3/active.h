@@ -12,6 +12,7 @@ public:
     void activate();
     Active() {};
     virtual ~Active() {};
+    std::vector<Passive *> &getPassiveObjects();
 };
 
 #endif // ACTIVE_H

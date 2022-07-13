@@ -16,8 +16,8 @@ public:
     void connectLevelChanger(levelChanger* connectingLevelChanger);
     levelChanger(Level* stage, int r, int c, DungeonCrawler* spiel);
     ~levelChanger() {};
-    Level *getConnectingLevel() const;
     levelChanger *getConnectingChanger() const;
     void setConnectingChanger(levelChanger *newConnectingChanger);
+    Level *getConnectingLevel() const;
 };
 #endif // LEVELCHANGER_H

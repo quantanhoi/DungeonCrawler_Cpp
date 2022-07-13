@@ -5,6 +5,7 @@
 class attackController : virtual public Controller
 {
 public:
+    Character* chooseTarget();
     attackController();
     void chooseCharacter(Level* level) override;
     int move(Input in) override;

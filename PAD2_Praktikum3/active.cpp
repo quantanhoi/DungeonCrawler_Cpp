@@ -1,5 +1,10 @@
 #include "active.h"
 #include"Tile.h"
+std::vector<Passive *> &Active::getPassiveObjects()
+{
+    return passiveObjects;
+}
+
 int Active::attach(Passive *pPassive) {
     for(int i{}; i < passiveObjects.size(); i ++) {
         if(passiveObjects.at(i) == pPassive) {

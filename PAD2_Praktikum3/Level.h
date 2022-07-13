@@ -37,7 +37,9 @@ public:
         }
     }
     //prak5
-    std::vector<std::pair<int, int>> getPath(Tile* from, Tile* to);    //pair row and column with std::pair
+    std::vector<std::tuple<int, int, int >> getPath(Tile* from, Tile* to);    //distance, row, col
+    int distanceViaPortal(Tile* from, Tile* to);
+    int distanceOnFoot(Tile* from, Tile* to);
 
 };
 

@@ -221,6 +221,11 @@ Tile* Ramp::onLeave(Tile *destTile, Character *who) {
 void Door::setTexture() {
     setDoorTexture();
 }
+bool Door::getStatus() const
+{
+    return status;
+}
+
 void Door::setDoorTexture() {
     if(status) {
         renderedTexture = QPixmap(":/textures/doors/door2.png");

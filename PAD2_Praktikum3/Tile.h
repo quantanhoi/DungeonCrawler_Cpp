@@ -85,6 +85,7 @@ public:
     void setTexture() override;
     Door(Level* stage, int r, int c);
     ~Door(){};
+    bool getStatus() const;
 };
 
 class Switch : public Active, virtual public Tile {

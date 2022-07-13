@@ -1,5 +1,6 @@
 #include<DungeonCrawler.h>
 #include<QMessageBox>
+#include<fstream>
 #include"mainwindow.h"
 Level *DungeonCrawler::getCurrentLevel() const
 {
@@ -114,6 +115,83 @@ void DungeonCrawler::initialisieren() {
 
 //3, 2
 }
+void DungeonCrawler::writeLevel()
+{
+    std::string path = "level1.txt";
+    //std::string path = level + ".txt";
+    std::ofstream data(path, std::ofstream::out | std::ofstream::trunc);
+
+    if ( !data.good() )
+    {
+        throw ("file can not be opened");
+    }
+
+    //std::ofstream data ("file.txt");
+    data << "row: " << numRows << std::endl;
+    data << "col: " << numColumns << std::endl;
+    //data << "name: " << level << std::endl;
+//    for(auto& tile : allLevel)
+//    {
+//    }
+    data << "tile" << std::endl;
+    iterator = levelList->begin();
+    currentLevel = *iterator;
+    for(int i = 0; i < numRows; i ++ )
+    {
+        for(int z = 0; z < numColumns; z++)
+        {
+            data << "col: " << currentLevel->stage[i][z]->getCol() << " "
+                 << "row: " << currentLevel->stage[i][z]->getRow() << " "
+                 << "texture: " << currentLevel->stage[i][z]->getTexture() << " ";
+            if (currentLevel->stage[i][z]->getTexture() == "O")//portal
+            {
+                data
+                << "destCol " << dynamic_cast<Portal*>(currentLevel->stage[i][z])->getConnectingPortal()->getCol() << " "
+                << "destRow " << dynamic_cast<Portal*>(currentLevel->stage[i][z])->getConnectingPortal()->getRow() << " ";
+            }
+            if (currentLevel->stage[i][z]->getTexture() == "-")//door
+            {
+                data << "is_open " << dynamic_cast<Door*>(currentLevel->stage[i][z])->getStatus() << " ";
+            }
+            if (currentLevel->stage[i][z]->getTexture() == "?")//switch
+            {
+                Switch* a = dynamic_cast<Switch*>(currentLevel->stage[i][z]);
+
+                Tile* tile;
+                for(size_t i = 0; i < a->getPassiveObjects().size(); i++)
+                {
+                     tile = dynamic_cast<Tile*>(a->getPassiveObjects().at(i));
+                }
+
+                data << "target "
+                << "col_door: " << tile->getCol() << " "
+                << "row_door: " << tile->getRow() << " ";
+            }
+
+            if (currentLevel->stage[i][z]->getTexture() == ">")//levelchange
+            {
+                int counter = 1;
+                for( iterator = levelList->begin(); iterator != levelList->end(); ++iterator )
+                {
+
+                    if (dynamic_cast<levelChanger*>(currentLevel->stage[i][z])->getConnectingLevel() == *iterator)
+                    {
+                        data << "Level: " << counter;
+                        break;
+                    }
+                    else
+                        counter ++;
+                }
+            }
+            data << typeid( *(currentLevel->getTile(i,z)) ).name() << ";";
+            data << std::endl;
+        }
+        data << std::endl;
+    }
+
+
+}
+
 void DungeonCrawler::play() {
     //int i{0};
     initialisieren();

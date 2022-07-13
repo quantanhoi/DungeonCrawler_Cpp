@@ -22,6 +22,11 @@ void levelChanger::setConnectingChanger(levelChanger *newConnectingChanger)
     connectingChanger = newConnectingChanger;
 }
 
+Level *levelChanger::getConnectingLevel() const
+{
+    return connectingLevel;
+}
+
 Tile* levelChanger::onEnter(Tile* fromTile, Character* who) {
 
     for(int i =0; i < game->getCurrentLevel()->characterVector.size(); i ++) {
