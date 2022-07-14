@@ -13,6 +13,9 @@
 #include"list.h"
 #include"levelChanger.h"
 #include"lootChest.h"
+#include"attackController.h"
+//#include"json.hpp"
+
 #define NUMBER_OF_LEVEL_TEST 2
 class DungeonCrawler {
 private:
@@ -20,6 +23,7 @@ private:
     Level* currentLevel;
     GraphicalUI* pGraphicalUI;
     bool gameEnd;
+    attackController* pAttackController;
 
 public:
 
@@ -36,6 +40,7 @@ public:
         currentLevel = allLevel[0];*/
         levelList = new myList;
         pGraphicalUI = new GraphicalUI;
+        pAttackController = new attackController;
         gameEnd = false;
     }
     ~DungeonCrawler();
@@ -47,6 +52,8 @@ public:
     void setCurrentLevel(Level *newCurrentLevel);
     void setGameEnd(bool newGameEnd);
     void writeLevel();
+    void readLevel(std::fstream& path);
+    attackController *getPAttackController() const;
 };
 
 #endif // DUNGEONCRAWLER_H

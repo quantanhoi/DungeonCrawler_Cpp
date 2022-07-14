@@ -70,7 +70,7 @@ bool Tile::moveTo(Tile* destTile, Character* who) {
                 return true;
             }
             if(typeid (*destTile).name() == typeid (Switch).name()) {  //switch
-                destTile->onEnter(destTile, who);
+                dynamic_cast<Switch*>(destTile)->activate();
                 return true;
             }
             if(typeid (*destTile).name() == typeid (levelChanger).name()) {
@@ -79,7 +79,7 @@ bool Tile::moveTo(Tile* destTile, Character* who) {
             }
             if(typeid (*destTile).name() == typeid (lootChest).name()) {
                 dynamic_cast<lootChest*>(destTile)->endgame();
-        }
+            }
             return true;
         }
         else {

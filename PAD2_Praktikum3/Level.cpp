@@ -18,7 +18,9 @@ void printQMessage(std::string text) {
 }
 bool Level::isValidNode(int x, int y) {     //only wall return nullptr
     if(typeid (*this->getTile(x, y)).name() == typeid (levelChanger).name()
-            || typeid (*this->getTile(x, y)).name() == typeid (Portal).name()) {
+            || typeid (*this->getTile(x, y)).name() == typeid (Portal).name()
+            || typeid (*this->getTile(x, y)).name() == typeid (Pit).name()
+            || typeid (*this->getTile(x, y)).name() == typeid (Switch).name()) {
         std::cout << "shitttttt" << std::endl;
         return false;
     }
@@ -26,6 +28,17 @@ bool Level::isValidNode(int x, int y) {     //only wall return nullptr
         return false;
     }*/
     if(this->getTile(x, y)->onEnter(this->getTile(x, y), nullptr) != nullptr) {
+        return true;
+    }
+    return false;
+}
+bool Level::isValidNode_Test(Tile* from,int x, int y) {
+    if(typeid (*this->getTile(x, y)).name() == typeid (levelChanger).name()
+            || typeid (*this->getTile(x, y)).name() == typeid (Portal).name()) {
+        //std::cout << "shitttttt" << std::endl;
+        return false;
+    }
+    if(from->moveTo(this->getTile(x, y), nullptr)) {
         return true;
     }
     return false;
@@ -86,11 +99,6 @@ std::vector<Node> Level::aStar(Tile *player, Tile *dest)
     while (!openList.empty() && openList.size() < numRows*numColumns) {
         Node node;
         do {
-            //This do-while loop could be replaced with extracting the first
-            //element from a set, but you'd have to make the openList a set.
-            //To be completely honest, I don't remember the reason why I do
-            //it with a vector, but for now it's still an option, although
-            //not as good as a set performance wise.
             float temp = FLT_MAX;
             std::vector<Node>::iterator itNode;
             for (std::vector<Node>::iterator it = openList.begin();

@@ -32,7 +32,6 @@ void Active::activate() {
 }
 
 Tile* Switch::onEnter(Tile *fromTile, Character *who) {
-    this->activate();
     return this;
 }
 Tile* Switch::onLeave(Tile *destTile, Character *who) {

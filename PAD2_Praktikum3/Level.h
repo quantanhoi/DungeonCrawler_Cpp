@@ -47,6 +47,7 @@ public:
     std::vector<Node> aStar(Tile* from, Tile* to);
     float calculateH(int x, int y, Tile* dest);
     std::vector<Node> makePath(std::array<std::array<Node, numRows>, numColumns> allMap, Node dest);
+    bool isValidNode_Test(Tile* from, int x, int y);
 
 
 

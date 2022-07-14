@@ -37,7 +37,7 @@ Ui::MainWindow *MainWindow::getUi() const
 void MainWindow::moveSlot(Input in) {
 
     if(in == skip) {
-        std::vector<Node> path =  game->getPGraphicalUI()->getPCharacter()->getLevel()->aStar
+        /*std::vector<Node> path =  game->getPGraphicalUI()->getPCharacter()->getLevel()->aStar
                 (game->getPGraphicalUI()->getPCharacter()->getCurrentTile(),
                  game->getPGraphicalUI()->getPCharacter()->getLevel()->getTile(4, 7));
 
@@ -46,7 +46,11 @@ void MainWindow::moveSlot(Input in) {
             game->getPGraphicalUI()->getPCharacter()->moveToTile(path.at(i).x, path.at(i).y);
             printStatusBar();
             redraw();
-        }
+        }*/
+        game->getPAttackController()->move(in);
+        printStatusBar();
+        redraw();
+
     }
     else {
         game->getPGraphicalUI()->move(in);

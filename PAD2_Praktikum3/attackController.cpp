@@ -1,5 +1,6 @@
 #include "attackController.h"
 #include"Character.h"
+#include"QMessageBox"
 attackController::attackController()
 {
 
@@ -13,6 +14,14 @@ void attackController::chooseCharacter(Level *level) {
     }
 }
 int attackController::move(Input in) {    //find and attack closest character
+    Character* target = chooseTarget();
+    QMessageBox msg;
+    std::vector<Node> path = this->pCharacter->getLevel()->aStar(this->pCharacter->getCurrentTile(), target->getCurrentTile());
+    if(path.at(path.size()-1).x != target->getRow() && path.at(path.size()-1).y != target->getCol()) {
+        msg.setText(QString("Can't find path to player"));
+        return 0;
+    }
+    this->pCharacter->moveToTile(path.at(1).x, path.at(1).y);
     //now somehow we could choose an input to move
     return 1;
 

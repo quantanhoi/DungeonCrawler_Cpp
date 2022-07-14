@@ -108,6 +108,7 @@ void GraphicalUI::draw(Level *level, MainWindow* mainWindow) {
 
 void GraphicalUI::chooseCharacter(Level *level) {
     pCharacter = level->characterVector.at(0);
+    pCharacter->setPController(this);
 }
 void GraphicalUI::moveToTile(int row, int col) {
     if(row <= numRows-1 && col <= numColumns -1 && row>= 0  && col >=0) {
