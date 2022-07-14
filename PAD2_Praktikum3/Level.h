@@ -19,7 +19,6 @@ public:
     std::vector<Character*> npcVector;
     std::array<std::array<Tile*, numRows>, numColumns> stage;
     Tile* getTile(int row, int col);
-    Tile getTile_(int row, int col);
     const Tile* getTile(int row, int col) const;
     void placeCharacter(Character* c, int row, int col);
     void placePlayer(int row, int col);

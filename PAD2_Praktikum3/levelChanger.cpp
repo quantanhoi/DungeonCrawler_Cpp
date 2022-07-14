@@ -1,6 +1,10 @@
 #include "levelChanger.h"
 #include"DungeonCrawler.h"
 
+Level* levelChanger::getConnectingLevel() const
+{
+    return connectingLevel;
+}
 levelChanger::levelChanger(Level* stage, int r, int c, DungeonCrawler* spiel) : Tile(stage, row , col){
     pCharacter = nullptr;
     game = spiel;

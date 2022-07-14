@@ -16,6 +16,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <string>
 
 #define NUMBER_OF_LEVEL_TEST 2
 class DungeonCrawler {

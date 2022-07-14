@@ -6,9 +6,7 @@ Tile* Level::getTile(int row, int col) {
 const Tile* Level::getTile(int row, int col) const {
     return this->stage[row][col];
 }
-const Tile Level::getTile_(int row, int col) const {
-    return this->stage[row][col];
-}
+
 void Level::placeCharacter(Character* c, int row, int col) {
     characterVector.push_back(c);
     c->setCurrentTile(this->getTile(row, col));
