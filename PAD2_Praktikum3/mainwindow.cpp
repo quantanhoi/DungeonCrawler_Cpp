@@ -8,7 +8,6 @@
 #include"DungeonCrawler.h"
 #include"AbstractUI.h"
 #include"node.h"
-#include"windows.h"
 MainWindow::MainWindow(DungeonCrawler* ptrGame, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -40,14 +39,13 @@ void MainWindow::moveSlot(Input in) {
     if(in == skip) {
         std::vector<Node> path =  game->getPGraphicalUI()->getPCharacter()->getLevel()->aStar
                 (game->getPGraphicalUI()->getPCharacter()->getCurrentTile(),
-                 game->getPGraphicalUI()->getPCharacter()->getLevel()->getTile(4, 5));
+                 game->getPGraphicalUI()->getPCharacter()->getLevel()->getTile(4, 7));
 
         for(uint i{}; i < path.size(); i ++) {
             std::cout << path.at(i).x << " " << path.at(i).y << std::endl;
-            redraw();
             game->getPGraphicalUI()->getPCharacter()->moveToTile(path.at(i).x, path.at(i).y);
             printStatusBar();
-            Sleep(1000);
+            redraw();
         }
     }
     else {

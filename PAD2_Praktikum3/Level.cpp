@@ -22,9 +22,9 @@ bool Level::isValidNode(int x, int y) {     //only wall return nullptr
         std::cout << "shitttttt" << std::endl;
         return false;
     }
-    if(this->getTile(x, y)->hasCharacter()) {
+    /*if(this->getTile(x, y)->hasCharacter()) {
         return false;
-    }
+    }*/
     if(this->getTile(x, y)->onEnter(this->getTile(x, y), nullptr) != nullptr) {
         return true;
     }

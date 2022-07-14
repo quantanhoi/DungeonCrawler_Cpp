@@ -49,6 +49,8 @@ void Character::moveToTile(int row, int col) {
         else {
             setCoord(this->level->getTile(row, col)->onEnter(this->level->getTile(row, col), this)->getRow(),
                      this->level->getTile(row, col)->onEnter(this->level->getTile(row, col), this)->getCol());
+            msgBox.setText(QString("Step"));
+            msgBox.exec();
             return;
         }
     }
