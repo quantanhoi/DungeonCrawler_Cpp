@@ -22,9 +22,9 @@ bool Level::isValidNode(int x, int y) {     //only wall return nullptr
         std::cout << "shitttttt" << std::endl;
         return false;
     }
-    /*if(this->getTile(x, y)->hasCharacter()) {
+    if(this->getTile(x, y)->hasCharacter()) {
         return false;
-    }*/
+    }
     if(this->getTile(x, y)->onEnter(this->getTile(x, y), nullptr) != nullptr) {
         return true;
     }
@@ -71,8 +71,8 @@ std::vector<Node> Level::aStar(Tile *player, Tile *dest)
     Node destination = allMap[dest->getRow()][dest->getCol()];
     Node Start = allMap[player->getRow()][player->getCol()];
     //Initialize our starting list
-    int x = player->getRow();
-    int y = player->getCol();
+    int x = Start.x;
+    int y = Start.y;
     allMap[x][y].fCost = 0.0;
     allMap[x][y].gCost = 0.0;
     allMap[x][y].hCost = 0.0;
@@ -103,7 +103,7 @@ std::vector<Node> Level::aStar(Tile *player, Tile *dest)
             }
             node = *itNode;
             openList.erase(itNode);
-        } while (isValidNode(node.tile->getRow(), node.tile->getCol()) == false);
+        } while (isValidNode(node.x, node.y) == false);
 
         x = node.x;
         y = node.y;
