@@ -28,7 +28,12 @@ const QPixmap Character::getCharacterTexture() const
 
 void Character::moveToTile(int row, int col) {
     QMessageBox msgBox;
-    if(row < numRows && col < numColumns  && row>= 0  && col >=0) {
+    if(row == numRows || col == numColumns) {
+        msgBox.setText(QString("you can't move outside of the map"));
+        msgBox.exec();
+        return;
+    }
+    if(row < numRows && col < numColumns  && row >= 0  && col >=0) {
         if(!this->currentTile->moveTo(this->level->getTile(row, col), this))
         {          
             msgBox.setText(QString("You cannot move here"));
@@ -47,6 +52,7 @@ void Character::moveToTile(int row, int col) {
             return;
         }
     }
+
     else {
         msgBox.setText(QString("you can't move outside of the map"));
         msgBox.exec();
@@ -163,7 +169,8 @@ int Character::move(Input input) {
         break;
     case skip:
         //this->level->distanceViaPortal(this->currentTile, this->getLevel()->getTile(4, 5));  //lootchest
-        this->getLevel()->aStar(this->currentTile, this->getLevel()->getTile(4, 5));
+        //this->getLevel()->aStar(this->currentTile, this->getLevel()->getTile(4, 5));
+
         //hasEnemyAround();
         //QApplication::quit();
         //msgBox.setText(QString("skip"));
@@ -300,6 +307,13 @@ Controller *Character::getPController() const
 void Character::setPController(Controller *newPController)
 {
     pController = newPController;
+}
+
+void Character::movePath(Tile *from, Tile *to)
+{
+    for(Node node : this->getLevel()->aStar(this->currentTile, this->getLevel()->getTile(4, 5))) {
+        moveToTile(node.x, node.y);
+    }
 }
 
 bool Character::hasEnemyFront() {

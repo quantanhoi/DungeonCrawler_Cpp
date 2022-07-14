@@ -29,8 +29,10 @@ public:
     Ui::MainWindow *getUi() const;
     QWidget* getCentralWidget();
     QGridLayout *getGridlayout() const;
-
+    void redraw();
     float getMax() const;
+    void printStatusBar();
+    void GameOver();
 
 public slots:
     void moveSlot(Input input);

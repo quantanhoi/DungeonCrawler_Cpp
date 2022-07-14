@@ -9,6 +9,7 @@
 #include<stack>
 #include<map>
 #include"levelChanger.h"
+
 void printQMessage(std::string text) {
     QMessageBox msg;
     msg.setText(QString::fromStdString(text));
@@ -21,6 +22,9 @@ bool Level::isValidNode(int x, int y) {     //only wall return nullptr
         std::cout << "shitttttt" << std::endl;
         return false;
     }
+    /*if(this->getTile(x, y)->hasCharacter()) {
+        return false;
+    }*/
     if(this->getTile(x, y)->onEnter(this->getTile(x, y), nullptr) != nullptr) {
         return true;
     }
@@ -101,8 +105,8 @@ std::vector<Node> Level::aStar(Tile *player, Tile *dest)
             openList.erase(itNode);
         } while (isValidNode(node.tile->getRow(), node.tile->getCol()) == false);
 
-        x = node.tile->getRow();
-        y = node.tile->getCol();
+        x = node.x;
+        y = node.y;
         closedList[x][y] = true;
 
         //For each neighbour starting from North-West to South-East
@@ -140,7 +144,7 @@ std::vector<Node> Level::aStar(Tile *player, Tile *dest)
             }
         }
     }
-    if (destinationFound == false) {
+    if (!destinationFound) {
         std::cout << "Destination not found" << std::endl;
         return empty;
     }
@@ -174,16 +178,21 @@ std::vector<Node> Level::makePath(std::array<std::array<Node, numRows>, numColum
         }
         path.push(map[x][y]);
 
+
         while (!path.empty()) {
             Node top = path.top();
             path.pop();
             usablePath.emplace_back(top);
+        }
+        for(Node x : usablePath) {
+            std::cout << x.x << " " << x.y << std::endl;
         }
         return usablePath;
     }
     catch(const std::exception& e){
         std::cout << e.what() << std::endl;
     }
+
 }
 
 

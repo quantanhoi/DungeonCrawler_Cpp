@@ -7,6 +7,8 @@
 #include"Button.h"
 #include"DungeonCrawler.h"
 #include"AbstractUI.h"
+#include"node.h"
+#include"windows.h"
 MainWindow::MainWindow(DungeonCrawler* ptrGame, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -34,8 +36,37 @@ Ui::MainWindow *MainWindow::getUi() const
 }
 //void MainWindow::moveSlot(Input input) {}
 void MainWindow::moveSlot(Input in) {
-    QMessageBox msg;
-    game->getPGraphicalUI()->move(in);
+
+    if(in == skip) {
+        std::vector<Node> path =  game->getPGraphicalUI()->getPCharacter()->getLevel()->aStar
+                (game->getPGraphicalUI()->getPCharacter()->getCurrentTile(),
+                 game->getPGraphicalUI()->getPCharacter()->getLevel()->getTile(4, 5));
+
+        for(uint i{}; i < path.size(); i ++) {
+            std::cout << path.at(i).x << " " << path.at(i).y << std::endl;
+            redraw();
+            game->getPGraphicalUI()->getPCharacter()->moveToTile(path.at(i).x, path.at(i).y);
+            printStatusBar();
+            Sleep(1000);
+        }
+    }
+    else {
+        game->getPGraphicalUI()->move(in);
+        printStatusBar();
+        redraw();
+    }
+    //can actually end the game here
+    GameOver();
+
+}
+
+float MainWindow::getMax() const
+{
+    return max;
+}
+
+void MainWindow::printStatusBar()
+{
     if(game->getPGraphicalUI()->getPCharacter()->getStatus() == alive)  {
         ui->statusbar->showMessage(
                     QString("HP: ") + QString::number(game->getPGraphicalUI()->getPCharacter()->getHitpoint()) +
@@ -52,6 +83,25 @@ void MainWindow::moveSlot(Input in) {
                     QString(" Status: Dead")
                     );
     }
+}
+
+void MainWindow::GameOver()
+{
+    QMessageBox msg;
+    if(game->checkEndGame()) {
+        msg.setText(QString("Game Over"));
+        msg.exec();
+        this->hide();
+    }
+}
+
+QGridLayout *MainWindow::getGridlayout() const
+{
+    return gridlayout;
+}
+
+void MainWindow::redraw()
+{
     while(gridlayout->count()) {
         QWidget* widget = gridlayout->itemAt(0)->widget();
         if(widget){
@@ -60,27 +110,6 @@ void MainWindow::moveSlot(Input in) {
         }
     }
     GraphicalUI::draw(game->getCurrentLevel(), this);
-    if(game->checkEndGame()) {
-        msg.setText(QString("Game Over"));
-        msg.exec();
-        this->hide();
-
-    }
-
-
-    //can actually end the game here
-
-
-}
-
-float MainWindow::getMax() const
-{
-    return max;
-}
-
-QGridLayout *MainWindow::getGridlayout() const
-{
-    return gridlayout;
 }
 
 

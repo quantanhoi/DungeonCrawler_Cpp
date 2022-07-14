@@ -38,7 +38,12 @@ void DungeonCrawler::initialisieren() {
     levelList->push_back(level1);
     for(int i = 0; i < numRows; i ++ ) {
         for(int z = 0; z < numColumns; z++){
-           level1->stage[i][z] = new Floor(level1, i, z);
+            if( i == 0 || z == 0 || i == numRows-1 || z == numColumns -1) {
+                level1->stage[i][z] = new Wall(level1, i, z);
+            }
+            else {
+                level1->stage[i][z] = new Floor(level1, i, z);
+            }
         }
     }
 
@@ -191,6 +196,8 @@ void DungeonCrawler::writeLevel()
 
 
 }
+
+
 
 void DungeonCrawler::play() {
     //int i{0};

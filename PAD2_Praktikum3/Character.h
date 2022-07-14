@@ -86,6 +86,7 @@ public:
     void setOldTile(Tile *newOldTile);
     Controller *getPController() const;
     void setPController(Controller *newPController);
+    void movePath(Tile* from, Tile* to);
 };
 
 
