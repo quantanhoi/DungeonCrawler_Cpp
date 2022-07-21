@@ -29,6 +29,11 @@ const QPixmap &Tile::getRenderedTexture() const
     return renderedTexture;
 }
 
+Level *Tile::getPLevel() const
+{
+    return pLevel;
+}
+
 std::string Tile::getTexture() {
     return texture;
 }
@@ -228,6 +233,11 @@ void Door::setTexture() {
 bool Door::getStatus() const
 {
     return status;
+}
+
+void Door::setStatus(bool newStatus)
+{
+    status = newStatus;
 }
 
 void Door::setDoorTexture() {

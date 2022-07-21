@@ -2,6 +2,7 @@
 #include<QMessageBox>
 #include<fstream>
 #include"mainwindow.h"
+
 Level *DungeonCrawler::getCurrentLevel() const
 {
     return currentLevel;
@@ -35,6 +36,15 @@ void DungeonCrawler::setGameEnd(bool newGameEnd)
 attackController *DungeonCrawler::getPAttackController() const
 {
     return pAttackController;
+}
+
+void DungeonCrawler::loadGame()
+{
+    std::fstream path("level1.txt");
+    readLevel(path);
+    MainWindow* mainWindow = new MainWindow(this);
+    mainWindow->show();
+    GraphicalUI::draw(getCurrentLevel(), mainWindow);
 }
 
 void DungeonCrawler::initialisieren() {
@@ -126,9 +136,9 @@ void DungeonCrawler::initialisieren() {
 
 //3, 2
 }
-void DungeonCrawler::writeLevel()
+void DungeonCrawler::writeLevel(std::string path)
 {
-    std::string path_ = "level1.txt";
+    std::string path_ = path;
     //std::string path = level + counter + ".txt";
     std::ofstream data(path_, std::ofstream::out | std::ofstream::trunc);
 
@@ -136,7 +146,6 @@ void DungeonCrawler::writeLevel()
     {
         throw ("file can not be opened");
     }
-
     //std::ofstream data ("file.txt");
     data << "row: " << numRows << std::endl;
     data << "col: " << numColumns << std::endl;
@@ -144,9 +153,7 @@ void DungeonCrawler::writeLevel()
 //    for(auto& tile : allLevel)
 //    {
 //    }
-    data << std::endl;
-    iterator = levelList->begin();
-    currentLevel = *iterator;
+
     for(int i = 0; i < numRows; i ++ )
     {
         for(int z = 0; z < numColumns; z++)
@@ -171,6 +178,14 @@ void DungeonCrawler::writeLevel()
             if (currentLevel->stage[i][z]->getTexture() == "-" || currentLevel->stage[i][z]->getTexture() == "/")  //door
             {
                 data << "is_open " << dynamic_cast<Door*>(currentLevel->stage[i][z])->getStatus() << " ";
+                Door* a = dynamic_cast<Door*>(currentLevel->stage[i][z]);
+
+                Tile* tile;
+                tile = dynamic_cast<Tile*>(a->getConnectedSwitch());
+                data << "target "
+                << "col_switch: " << tile->getCol() << " "
+                << "row_switch: " << tile->getRow() << " ";
+
             }
 
             if (currentLevel->stage[i][z]->getTexture() == "?")//switch
@@ -192,16 +207,16 @@ void DungeonCrawler::writeLevel()
             if (currentLevel->stage[i][z]->getTexture() == ">")//levelchange
             {
                 int counter = 1;
-                for( iterator = levelList->begin(); iterator != levelList->end(); ++iterator )
-                {
-                    if (dynamic_cast<levelChanger*>(currentLevel->stage[i][z])->getConnectingLevel() == *iterator)
-                    {
-                        data << "Level: " << counter;
+                iterator = levelList->begin();
+                while(iterator != levelList->end()){
+                    if(dynamic_cast<levelChanger*>(currentLevel->stage[i][z])->getConnectingChanger()->getPLevel() == *iterator) {
+
                         break;
                     }
-                    else
-                        counter ++;
+                    counter++;
+                    ++iterator;
                 }
+                data << "Level: " << counter;
             }
             //data << typeid( *(currentLevel->getTile(i,z)) ).name() << ";";
             if (currentLevel->getTile(i,z)->hasCharacter())
@@ -248,6 +263,7 @@ void DungeonCrawler::readLevel(std::fstream& path)
     int numColumns; path >> numColumns;
     path >> name;//ignore "row:"
     int numRows; path >> numRows;
+
     for(int i = 0; i < numRows; i ++ ) {
         for(int z = 0; z < numColumns; z++){
            level1->stage[i][z] = new Floor(level1, i, z);
@@ -258,8 +274,6 @@ void DungeonCrawler::readLevel(std::fstream& path)
 
 //    std::vector<int> col_vector;
 //    std::vector<int> row_vector;
-
-    int count = -1;
     while (!path.eof())
     {
         int i = 0;
@@ -299,44 +313,30 @@ void DungeonCrawler::readLevel(std::fstream& path)
         {
             delete level1->stage[row][col];
             level1->stage[row][col] = new levelChanger(level1, row, col, this);
+
         }
         int destCol1{},destRow1{},destCol2{},destRow2{};
 //        Portal* newPort;
 //        Portal* newPort2;
         if (texture == "O")
         {
-            if (count == -1)
-            {
-                count++;
+            if(typeid (*level1->stage[row][col]).name() != typeid (Portal).name()) {
+                delete level1->stage[row][col];
+                Portal* newPort1 = new Portal(level1, row, col, nullptr);
+                level1->stage[row][col] = newPort1;
                 path >> name; path >> destCol1;
                 path >> name; path >> destRow1;
-                //newPort = new Portal(level1, destRow1, destCol1, nullptr);
-//                std::cout << " dest " << " col 1 " << destCol1
-//                          << " row 1 " << destRow1;
-
+                delete level1->stage[destRow1][destCol1];
+                Portal* newPort2 = new Portal(level1, destRow1, destCol1, nullptr);
+                level1->stage[destRow1][destCol1] = newPort2;
+                newPort1->connectPortal(newPort2);
             }
-            else {
-            path >> name; path >> destCol2;
-            path >> name; path >> destRow2;
-            delete level1->stage[destRow2][destCol2];
-            }
-            //if path encounters "O" 2nd times
 
-//            std::cout << " dest "
-//                      << " col 2 " << destCol2
-//                      << " row 2 " << destRow2;
-            delete level1->stage[destRow1][destCol1];
-
-            Portal* newPort = new Portal(level1, destRow1, destCol1, nullptr);
-            level1->stage[destRow1][destCol1]= newPort;
-            Portal* newPort2 = new Portal(level1, destRow2, destCol2, nullptr);
-            newPort2->connectPortal(newPort);
-            level1->stage[destRow2][destCol2] = newPort2;
         }
 
 
         int col_door{}, row_door{};
-        int col_sw{}, row_sw{};
+        int col_switch{}, row_switch{};
         if (texture == "?")
         {
             //path >> name; path >> col_sw;
@@ -345,15 +345,28 @@ void DungeonCrawler::readLevel(std::fstream& path)
             path >> name; path >> col_door;
             path >> name; path >> row_door;
 
-//            std::cout << " door " << "col " << col_door << " row " << row_door
-//                      << " switch " <<  "col " << col_sw  << " row "  << row_sw;
-            //delete level1->stage[row_door][col_door];
-            Door* door1 = new Door(level1, row_door, col_door);
-            //delete level1->stage[row_sw][col_sw];
-            Switch* switch1 = new Switch(level1, row_sw, col_sw);
-            level1->stage[row_sw][col_sw] = switch1;
-            switch1->attach(door1);
-
+        }
+        bool status;
+        if(texture == "-" || texture == "/") {
+            path >> name; //read is_open
+            path >> status;
+            path >> name;
+            path >> name; path >> col_switch;
+            path >> name; path >> row_switch;
+            delete level1->stage[row][col];
+            Door* door1 = new Door(level1, row, col);
+            level1->stage[row][col] = door1;
+            door1->setStatus(status);
+            door1->setDoorTexture();
+            if(typeid(*level1->stage[row_switch][col_switch]).name() != typeid (Switch).name()) {
+                delete level1->stage[row_switch][col_switch];
+                Switch* switch1 = new Switch(level1, row_switch, col_switch);
+                level1->stage[row_switch][col_switch] = switch1;
+                switch1->attach(door1);
+            }
+            else {
+                dynamic_cast<Switch*>(level1->stage[row_switch][col_switch])->attach(door1);
+            }
         }
 
 
@@ -377,6 +390,7 @@ void DungeonCrawler::readLevel(std::fstream& path)
             else
             {
                 level1->placeNPC(row, col);
+                pAttackController->chooseCharacter(this->currentLevel);
             }
         }
 
@@ -387,14 +401,18 @@ void DungeonCrawler::readLevel(std::fstream& path)
 
 
 void DungeonCrawler::play() {
-    //int i{0};
-    //initialisieren();
-    std::fstream path("level1.txt");
-    readLevel(path);
+    initialisieren();
+    //std::fstream path("level1.txt");
+    //readLevel(path);
     MainWindow* mainWindow = new MainWindow(this);
     mainWindow->show();
-    GraphicalUI::draw(this->currentLevel, mainWindow);
-    //writeLevel();
+    GraphicalUI::draw(getCurrentLevel(), mainWindow);
+    int counter{1};
+    for(iterator = levelList->begin(); iterator != levelList->end(); ++iterator) {
+        std::string path = "level" + std::to_string(counter) +".txt";
+        writeLevel(path);
+    }
+
 
 
 

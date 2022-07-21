@@ -38,6 +38,7 @@ public:
     Tile(const Tile &tile1);
 
     const QPixmap &getRenderedTexture() const;
+    Level *getPLevel() const;
 };
 
 class Floor :  virtual public Tile {
@@ -86,6 +87,7 @@ public:
     Door(Level* stage, int r, int c);
     ~Door(){};
     bool getStatus() const;
+    void setStatus(bool newStatus);
 };
 
 class Switch : public Active, virtual public Tile {

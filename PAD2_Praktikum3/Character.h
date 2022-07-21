@@ -44,7 +44,8 @@ public:
     void setCoord(int row, int col);
     void moveToTile(int row, int nums);
     Character(int Str, int Stam, CharacterType type) {
-        characterString = std::to_string(characterID);
+        //characterString = std::to_string(characterID);
+        characterString = "|";
         characterID++;
         oldTile = NULL;
         pController = nullptr;

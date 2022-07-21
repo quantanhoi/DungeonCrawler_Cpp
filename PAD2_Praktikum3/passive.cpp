@@ -21,3 +21,8 @@ void Door::notify(Active *source) {
         texture = "-";
     }
 }
+
+Active *Passive::getConnectedSwitch() const
+{
+    return connectedSwitch;
+}

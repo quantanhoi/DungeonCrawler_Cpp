@@ -44,5 +44,6 @@
         <file>textures/chest.png</file>
         <file>textures/levelchanger.png</file>
         <file>textures/zombie.png</file>
+        <file>textures/load-icon.png</file>
     </qresource>
 </RCC>

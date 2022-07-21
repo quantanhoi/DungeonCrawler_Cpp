@@ -12,6 +12,7 @@ public:
     virtual void setTexture() = 0;
     Passive() {};
     virtual ~Passive() {};
+    Active *getConnectedSwitch() const;
 };
 
 #endif // PASSIVE_H

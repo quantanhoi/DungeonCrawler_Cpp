@@ -94,6 +94,7 @@ DISTFILES += \
     textures/floor/floor3.png \
     textures/floor/floor4.png \
     textures/floor/floor5.png \
+    textures/load-icon.png \
     textures/new_game_button.png \
     textures/pit.png \
     textures/portal/portal1.png \

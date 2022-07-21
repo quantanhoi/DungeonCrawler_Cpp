@@ -8,7 +8,7 @@ StartScreen::StartScreen(QWidget *parent) :
     ui(new Ui::StartScreen)
 {
     ui->setupUi(this);
-    QWidget::setStyleSheet("background-color: black;");
+    //QWidget::setStyleSheet("background-color: black;");
     //QLabel* start = new QLabel(this);
     //start->setPixmap(QPixmap(":/textures/startscreen.png"));
     //start->setScaledContents(true);
@@ -26,5 +26,13 @@ void StartScreen::on_pushButton_clicked()
     QWidget::hide();
     DungeonCrawler* game = new DungeonCrawler;
     game->play();
+}
+
+
+void StartScreen::on_pushButton_2_clicked()
+{
+    QWidget::hide();
+    DungeonCrawler* game = new DungeonCrawler;
+    game->loadGame();
 }
 
