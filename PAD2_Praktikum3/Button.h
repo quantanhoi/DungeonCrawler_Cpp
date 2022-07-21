@@ -12,7 +12,7 @@ class GraphicalUI;
 class Button : public QPushButton
 {
 public:
-    Button(Input input,MainWindow* mainWindow, QWidget* parent = nullptr);
+    Button(Input input, MainWindow* mainWindow, QWidget* parent = nullptr);
     Input getInput();
 
 signals:

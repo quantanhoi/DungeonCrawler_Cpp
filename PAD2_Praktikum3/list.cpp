@@ -153,11 +153,34 @@ myList::iterator myList::begin() {
 }
 myList::iterator myList::end() {
     iterator end;
-    if(start != nullptr) {
-        while(start->next != nullptr) {
-            start = start->next;
+    Element* cur = start;
+    if(cur != nullptr) {
+        while(cur->next != nullptr) {
+            cur = cur->next;
         }
-        end.current = start;
+        end.current = cur;
     }
     return end;
 }
+
+myList::iterator myList::next()
+{
+    iterator it;
+    if(it.current->next != nullptr) {
+        it.current = it.current->next;
+    }
+    return it;
+}
+
+bool myList::hasNext()
+{
+    iterator it;
+    if(it.current->next != nullptr) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+

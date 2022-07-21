@@ -12,6 +12,7 @@ Button::Button(Input in,MainWindow* mainWindow, QWidget* parent)
 }
 void Button::onClicked() {
     mainWindow->moveSlot(input);
+
 }
 Input Button::getInput() {
     return input;

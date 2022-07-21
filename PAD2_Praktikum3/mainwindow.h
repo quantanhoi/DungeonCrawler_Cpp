@@ -34,6 +34,8 @@ public:
     void printStatusBar();
     void GameOver();
 
+    DungeonCrawler *getGame() const;
+
 public slots:
     void moveSlot(Input input);
 private:

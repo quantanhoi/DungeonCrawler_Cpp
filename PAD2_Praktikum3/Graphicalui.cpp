@@ -6,6 +6,7 @@
 #include<QLabel>
 #include"Button.h"
 #include"mainwindow.h"
+#include"saveButton.h"
 #define BOTTOMROW 1
 #define MIDROW 2
 #define UPROW 3
@@ -100,6 +101,10 @@ void GraphicalUI::draw(Level *level, MainWindow* mainWindow) {
     mainWindow->getGridlayout()->addWidget(arrow_up_left, numRows-UPROW, numColumns+LEFT);
     setButton(arrow_up_right, ":/textures/arrows/arrow_up_right.png", mainWindow->getMax());
     mainWindow->getGridlayout()->addWidget(arrow_up_right, numRows-UPROW, numColumns+RIGHT);
+
+    saveButton* saveButton1 = new saveButton(mainWindow, mainWindow->getGame());
+    setButton(saveButton1, ":/textures/load-icon.png", mainWindow->getMax());
+    mainWindow->getGridlayout()->addWidget(saveButton1, numRows ,  numColumns+MID);
 
 
 

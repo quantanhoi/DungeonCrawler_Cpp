@@ -28,6 +28,7 @@ SOURCES += \
     mainwindow.cpp \
     node.cpp \
     passive.cpp \
+    saveButton.cpp \
     startscreen.cpp
 
 HEADERS += \
@@ -48,6 +49,7 @@ HEADERS += \
     mainwindow.h \
     node.h \
     passive.h \
+    saveButton.h \
     startscreen.h
 
 FORMS += \

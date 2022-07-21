@@ -62,6 +62,11 @@ void MainWindow::moveSlot(Input in) {
 
 }
 
+DungeonCrawler *MainWindow::getGame() const
+{
+    return game;
+}
+
 float MainWindow::getMax() const
 {
     return max;

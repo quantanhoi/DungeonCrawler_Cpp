@@ -51,10 +51,14 @@ public:
     void setPGraphicalUI(GraphicalUI *newPGraphicalUI);
     void setCurrentLevel(Level *newCurrentLevel);
     void setGameEnd(bool newGameEnd);
-    void writeLevel(std::string path);
-    void readLevel(std::fstream& path);
+    void writeLevel(std::ofstream& data);
+    void readLevel(std::fstream& path, Level* curLevel);
     attackController *getPAttackController() const;
     void loadGame();
+    void writeFile();
+    void readFile(std::fstream& path);
+public slots:
+    void Save();
 };
 
 #endif // DUNGEONCRAWLER_H
