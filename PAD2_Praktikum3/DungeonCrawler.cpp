@@ -169,6 +169,7 @@ void DungeonCrawler::writeFile()
     data << "row: " << numRows << std::endl;
     data << "col: " << numColumns << std::endl;
     myList::iterator ite;
+    Level* temp = currentLevel;
     for(ite = levelList->begin(); ite != levelList->end(); ++ite) {
         currentLevel = *ite;
         writeLevel(data);
@@ -177,6 +178,7 @@ void DungeonCrawler::writeFile()
     ite = levelList->end();
     currentLevel = *ite;
     writeLevel(data);
+    currentLevel = temp;
 
 }
 void DungeonCrawler::writeLevel(std::ofstream& data)
