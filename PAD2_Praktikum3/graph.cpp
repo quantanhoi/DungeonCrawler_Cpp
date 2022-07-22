@@ -15,12 +15,12 @@ void Graph::drawGraph(std::vector<Node> path)
     for(int i{}; i < numRows; i++) {
         for(int z{}; z < numColumns; z ++) {
             if(i == data.at(0).x && z == data.at(0).y && data.size() > 1) {
-                std::cout << "a";
+                std::cout << ".";
                 data.erase(data.begin()+0);
             }
 
             else {
-                std::cout << ".";
+                std::cout << "#";
             }
         }
         std::cout << std::endl;
