@@ -21,6 +21,7 @@ SOURCES += \
     Tile.cpp \
     active.cpp \
     attackController.cpp \
+    graph.cpp \
     levelChanger.cpp \
     list.cpp \
     lootChest.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     Tile.h \
     active.h \
     attackController.h \
+    graph.h \
     levelChanger.h \
     list.h \
     lootChest.h \

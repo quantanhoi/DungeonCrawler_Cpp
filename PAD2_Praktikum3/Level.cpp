@@ -21,7 +21,7 @@ bool Level::isValidNode(int x, int y) {     //only wall return nullptr
             || typeid (*this->getTile(x, y)).name() == typeid (Portal).name()
             || typeid (*this->getTile(x, y)).name() == typeid (Pit).name()
             || typeid (*this->getTile(x, y)).name() == typeid (Switch).name()) {
-        std::cout << "shitttttt" << std::endl;
+        //std::cout << "shitttttt" << std::endl;
         return false;
     }
     /*if(this->getTile(x, y)->hasCharacter()) {
@@ -39,6 +39,23 @@ bool Level::isValidNode_Test(Tile* from,int x, int y) {
         return false;
     }
     if(from->moveTo(this->getTile(x, y), nullptr)) {
+        return true;
+    }
+    return false;
+}
+
+bool Level::isValidNode_Portal(int x, int y)
+{     //only wall return nullptr
+    if(typeid (*this->getTile(x, y)).name() == typeid (levelChanger).name()
+            || typeid (*this->getTile(x, y)).name() == typeid (Pit).name()
+            || typeid (*this->getTile(x, y)).name() == typeid (Switch).name()) {
+        //std::cout << "shitttttt" << std::endl;
+        return false;
+    }
+    /*if(this->getTile(x, y)->hasCharacter()) {
+        return false;
+    }*/
+    if(this->getTile(x, y)->onEnter(this->getTile(x, y), nullptr) != nullptr) {
         return true;
     }
     return false;
@@ -111,7 +128,7 @@ std::vector<Node> Level::aStar(Tile *player, Tile *dest)
             }
             node = *itNode;
             openList.erase(itNode);
-        } while (isValidNode(node.x, node.y) == false);
+        } while (isValidNode_Portal(node.x, node.y) == false);
 
         x = node.x;
         y = node.y;
@@ -156,6 +173,153 @@ std::vector<Node> Level::aStar(Tile *player, Tile *dest)
         std::cout << "Destination not found" << std::endl;
         return empty;
     }
+}
+std::vector<Node> Level::aStar_Portal(Tile *player, Tile *dest)
+{
+    std::vector<Node> empty;
+    if (isValidNode_Portal(dest->getRow(), dest->getCol()) == false) {
+        std::cout << "Destination is an obstacle" << std::endl;
+        return empty;
+        //Destination is invalid
+    }
+    if (isDestination(player->getRow(), player->getCol(), dest)) {
+        std::cout << "You are the destination" << std::endl;
+        return empty;
+        //You clicked on yourself
+    }
+
+    bool closedList[numRows][numColumns];
+    //Initialize whole map AGAIN
+    std::array<std::array<Node, numRows>, numColumns> allMap;
+    for (int x = 0; x < numRows; x++) {
+        for (int y = 0; y < numColumns; y++) {
+            allMap[x][y].fCost = FLT_MAX;
+            allMap[x][y].gCost = FLT_MAX;
+            allMap[x][y].hCost = FLT_MAX;
+            allMap[x][y].parentX = -1;
+            allMap[x][y].parentY = -1;
+            allMap[x][y].tile = this->getTile(x, y);
+            allMap[x][y].x = x;
+            allMap[x][y].y = y;
+            closedList[x][y] = false;
+        }
+    }
+
+    Node destination = allMap[dest->getRow()][dest->getCol()];
+    Node Start = allMap[player->getRow()][player->getCol()];
+    //Initialize our starting list
+    int x = Start.x;
+    int y = Start.y;
+    allMap[x][y].fCost = 0.0;
+    allMap[x][y].gCost = 0.0;
+    allMap[x][y].hCost = 0.0;
+    allMap[x][y].parentX = x;
+    allMap[x][y].parentY = y;
+
+    std::vector<Node> openList;
+    openList.emplace_back(allMap[x][y]);
+    bool destinationFound = false;
+
+    while (!openList.empty() && openList.size() < numRows*numColumns) {
+        Node node;
+        do {
+            float temp = FLT_MAX;
+            std::vector<Node>::iterator itNode;
+            for (std::vector<Node>::iterator it = openList.begin();
+                it != openList.end(); it = next(it)) {
+                Node n = *it;
+                if (n.fCost < temp) {
+                    temp = n.fCost;
+                    itNode = it;
+                }
+            }
+            node = *itNode;
+            openList.erase(itNode);
+        } while (isValidNode_Portal(node.x, node.y) == false);
+
+        x = node.x;
+        y = node.y;
+        closedList[x][y] = true;
+
+        //For each neighbour starting from North-West to South-East
+        for (int newX = -1; newX <= 1; newX++) {
+            for (int newY = -1; newY <= 1; newY++) {
+                double gNew, hNew, fNew;
+                if (isValidNode_Portal(x + newX, y + newY)) {
+                    if (isDestination(x + newX, y + newY, dest))
+                    {
+                        //Destination found - make path
+                        allMap[x + newX][y + newY].parentX = x;
+                        allMap[x + newX][y + newY].parentY = y;
+                        destinationFound = true;
+                        return makePath(allMap, destination);
+                    }
+                    else if (closedList[x + newX][y + newY] == false)
+                    {
+                        gNew = node.gCost + 1.0;
+                        hNew = calculateH(x + newX, y + newY, dest);
+                        fNew = gNew + hNew;
+                        // Check if this path is better than the one already present
+                        if (allMap[x + newX][y + newY].fCost == FLT_MAX ||
+                            allMap[x + newX][y + newY].fCost > fNew)
+                        {
+                            // Update the details of this neighbour node
+                            allMap[x + newX][y + newY].fCost = fNew;
+                            allMap[x + newX][y + newY].gCost = gNew;
+                            allMap[x + newX][y + newY].hCost = hNew;
+                            allMap[x + newX][y + newY].parentX = x;
+                            allMap[x + newX][y + newY].parentY = y;
+                            openList.emplace_back(allMap[x + newX][y + newY]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (!destinationFound) {
+        std::cout << "Destination not found" << std::endl;
+        return empty;
+    }
+}
+
+std::vector<Node> Level::makePathViaPortal(Tile *from, Tile *to)
+{
+    std::vector<Node> first;
+    std::vector<Node> second;
+    for(int i{}; i < numRows; i++) {
+        for(int z{}; z < numColumns; z++) {
+            if(typeid (*this->stage[i][z]).name() == typeid (Portal).name()) {
+                if(this->aStar_Portal(from, this->stage[i][z]).size() != 0
+                        && this->aStar_Portal(dynamic_cast<Portal*>(this->stage[i][z])->getConnectingPortal(), to).size() != 0
+                        && first.size() != 0
+                        && second.size() !=0) {
+                    if(first.size()+second.size() > this->aStar_Portal(from, this->stage[i][z]).size()
+                            + this->aStar_Portal(dynamic_cast<Portal*>(this->stage[i][z])->getConnectingPortal(), to).size()) {
+                        first = this->aStar_Portal(from, this->stage[i][z]);
+                        second = this->aStar_Portal(dynamic_cast<Portal*>(this->stage[i][z])->getConnectingPortal(), to);
+                    }
+                    std::cout << "first: " << first.size() << " second: " << second.size() << std::endl;
+                }
+                if(first.size() == 0 && second.size() == 0) {
+                    first = this->aStar_Portal(from, this->stage[i][z]);
+                    second = this->aStar_Portal(dynamic_cast<Portal*>(this->stage[i][z])->getConnectingPortal(), to);
+                    std::cout << "first: " << first.size() << " second: " << second.size() << std::endl;
+                }
+            }
+        }
+    }
+    std::vector<Node> total;
+    if(first.size() == 0 || second.size() == 0) {
+        std::cout << "No path via portal found" << std::endl;
+        return total;     //total is empty
+    }
+    for(uint i{}; i < first.size(); i++) {
+        total.push_back(first.at(i));
+    }
+    for(uint i{}; i < second.size(); i++) {
+        total.push_back(second.at(i));
+    }
+    return total;
 }
 
 float Level::calculateH(int x, int y, Tile * dest)

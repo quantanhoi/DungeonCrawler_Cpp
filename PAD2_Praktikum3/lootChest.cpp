@@ -20,9 +20,9 @@ void lootChest::endgame() {
     game->setGameEnd(found);
 }
 Tile* lootChest::onEnter(Tile *fromTile, Character *who) {
-    QMessageBox msg;
+    /*QMessageBox msg;
     msg.setText(QString("Found the chest"));
-    msg.exec();
+    msg.exec();*/
     return this;
 
 }

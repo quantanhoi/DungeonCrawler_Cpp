@@ -109,9 +109,9 @@ void DungeonCrawler::initialisieren() {
     level1->stage[8][8] = changer1;
 
     //testing loot chest
-    delete level1->stage[6][1];
-    lootChest* loot1 = new lootChest(level1, 6, 1, this);
-    level1->stage[6][1] = loot1;
+    delete level1->stage[8][1];
+    lootChest* loot1 = new lootChest(level1, 8, 1, this);
+    level1->stage[8][1] = loot1;
 
 
     //level2
@@ -148,7 +148,7 @@ void DungeonCrawler::initialisieren() {
     }*/
     currentLevel = *iterator;
     this->currentLevel->placePlayer(3,3);
-    this->currentLevel->placeNPC(4, 4);
+    this->currentLevel->placeNPC(7, 7);
     pGraphicalUI->chooseCharacter(this->currentLevel);    //choose the first character placed in the current level
     pAttackController->chooseCharacter(this->currentLevel);
 

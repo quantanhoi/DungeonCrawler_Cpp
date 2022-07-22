@@ -54,6 +54,7 @@ void MainWindow::moveSlot(Input in) {
     }
     else {
         game->getPGraphicalUI()->move(in);
+        game->getPAttackController()->move(in);
         printStatusBar();
         redraw();
     }
