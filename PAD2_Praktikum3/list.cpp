@@ -163,24 +163,6 @@ myList::iterator myList::end() {
     return end;
 }
 
-myList::iterator myList::next()
-{
-    iterator it;
-    if(it.current->next != nullptr) {
-        it.current = it.current->next;
-    }
-    return it;
-}
 
-bool myList::hasNext()
-{
-    iterator it;
-    if(it.current->next != nullptr) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
 
 

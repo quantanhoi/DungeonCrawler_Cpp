@@ -17,11 +17,11 @@ void printQMessage(std::string text) {
 
 }
 bool Level::isValidNode(int x, int y) {     //only wall return nullptr
-    if(typeid (*this->getTile(x, y)).name() == typeid (levelChanger).name()
-            || typeid (*this->getTile(x, y)).name() == typeid (Portal).name()
-            || typeid (*this->getTile(x, y)).name() == typeid (Pit).name()
-            || typeid (*this->getTile(x, y)).name() == typeid (Switch).name()) {
-        //std::cout << "shitttttt" << std::endl;
+    bool isLevelChanger = typeid (*this->getTile(x, y)).name() == typeid (levelChanger).name();
+    bool isPortal = typeid (*this->getTile(x, y)).name() == typeid (Portal).name();
+    bool isPit = typeid (*this->getTile(x, y)).name() == typeid (Pit).name();
+    bool isSwitch = typeid (*this->getTile(x, y)).name() == typeid (Switch).name();
+    if(isLevelChanger || isPortal || isPit || isSwitch) {
         return false;
     }
     /*if(this->getTile(x, y)->hasCharacter()) {

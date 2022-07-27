@@ -43,8 +43,6 @@ public:
     };
     iterator begin();
     iterator end();
-    iterator next();
-    bool hasNext();
     // to this
 protected:
 
