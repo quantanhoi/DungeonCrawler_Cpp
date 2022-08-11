@@ -183,22 +183,7 @@ void DungeonCrawler::writeFile()
 }
 void DungeonCrawler::writeLevel(std::ofstream& data)
 {
-    /*std::string path_ = path;
-    //std::string path = level + counter + ".txt";
-    std::ofstream data(path_, std::ofstream::out | std::ofstream::trunc);
 
-    if ( !data.good() )
-    {
-        throw ("file can not be opened");
-    }
-    //std::ofstream data ("file.txt");
-    data << "row: " << numRows << std::endl;
-    data << "col: " << numColumns << std::endl;
-    //data << "name: " << level << std::endl;
-//    for(auto& tile : allLevel)
-//    {
-//    }
-    */
     for(int i = 0; i < numRows; i ++ )
     {
         for(int z = 0; z < numColumns; z++)
@@ -245,10 +230,7 @@ void DungeonCrawler::writeLevel(std::ofstream& data)
                      << "col_door: " << tile->getCol() << " "
                      << "row_door: " << tile->getRow() << " ";
                 }
-
-
             }
-
             if (currentLevel->stage[i][z]->getTexture() == ">")//levelchange
             {
                 int counter = 1;
@@ -258,11 +240,9 @@ void DungeonCrawler::writeLevel(std::ofstream& data)
                         break;
                     }
                     counter++;
-
                 }
                 data <<" row: " << dynamic_cast<levelChanger*>(currentLevel->stage[i][z])->getConnectingChanger()->getRow();
                 data <<" col: " << dynamic_cast<levelChanger*>(currentLevel->stage[i][z])->getConnectingChanger()->getCol();
-
             }
             //data << typeid( *(currentLevel->getTile(i,z)) ).name() << ";";
             if (currentLevel->getTile(i,z)->hasCharacter())
@@ -514,17 +494,6 @@ void DungeonCrawler::play() {
     mainWindow->show();
     GraphicalUI::draw(getCurrentLevel(), mainWindow);
     //writeFile();
-
-
-
-
-
-
-
-
-
-
-
     /*this->currentLevel->placeCharacterTest(1, 3);
     this->currentLevel->placeCharacterTest(2, 6);
     Level new_level = *this->currentLevel;    //test copy constructor
